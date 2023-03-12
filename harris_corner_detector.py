@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 
 # Replace ID1 and ID2 with your IDs.
-ID1 = '123456789'
+ID1 = '308345891'
 ID2 = '987654321'
 
 # Harris corner detector parameters - you may change them.
@@ -38,6 +38,7 @@ def bgr_image_to_rgb_image(bgr_image: np.ndarray) -> np.ndarray:
     """
     rgb_image = bgr_image.copy()
     """INSERT YOUR CODE HERE."""
+    rgb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
     return rgb_image
 
 
