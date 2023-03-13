@@ -56,10 +56,10 @@ def black_and_white_image_to_tiles(arr: np.ndarray, nrows: int,
     Take inspiration from: https://stackoverflow.com/questions/16873441/form-a-big-2d-array-from-multiple-smaller-2d-arrays
     """
     h, w = arr.shape
-    """INSERT YOUR CODE HERE.
-    REPLACE THE RETURNED VALUE WITH YOUR OWN IMPLEMENTATION.
-    """
-    return np.random.uniform(size=((h//nrows) * (w //ncols), nrows, ncols))
+    """INSERT YOUR CODE HERE"""
+    return (arr.reshape(h//nrows, nrows, -1, ncols)
+               .swapaxes(1, 2)
+               .reshape(-1, nrows, ncols))
 
 
 def image_tiles_to_black_and_white_image(arr: np.ndarray, h: int,
@@ -76,10 +76,10 @@ def image_tiles_to_black_and_white_image(arr: np.ndarray, h: int,
     Take inspiration from: https://stackoverflow.com/questions/16873441/form-a-big-2d-array-from-multiple-smaller-2d-arrays
     """
     n, nrows, ncols = arr.shape
-    """INSERT YOUR CODE HERE.
-    REPLACE THE RETURNED VALUE WITH YOUR OWN IMPLEMENTATION.
-    """
-    return np.random.uniform(size=(h, w))
+    """INSERT YOUR CODE HERE """
+    return (arr.reshape(h//nrows, -1, nrows, ncols)
+               .swapaxes(1, 2)
+               .reshape(h, w))
 
 
 def test_tiles_functions(to_save: bool = False) -> None:
