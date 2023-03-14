@@ -148,10 +148,12 @@ def create_grad_x_and_grad_y(
         input_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2GRAY)
 
     """INSERT YOUR CODE HERE"""
-    Iy_shift = np.pad(input_image, pad_width=((1, 0), (0, 0)), mode='constant', constant_values=0)[:-1, :]
-    Ix_shift = np.pad(input_image, pad_width=((0, 0), (1, 0)), mode='constant', constant_values=0)[:, :-1]
-    Ix = input_image - Ix_shift
-    Iy = input_image - Iy_shift
+    """Pay attention in first we use your recipe make one shift with numpy.pad but we get not so good result.
+     so we decide using dervitve kernel like we learn in signal processing to get better result."""
+    dx_filter = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]])
+    dy_filter = dx_filter.copy().transpose()
+    Iy = signal.convolve2d(input_image, dx_filter, mode='same')
+    Ix = signal.convolve2d(input_image, dy_filter, mode='same')
     return Ix, Iy
 
 
@@ -184,8 +186,14 @@ def calculate_response_image(input_image: np.ndarray, K: float) -> np.ndarray:
 
     """INSERT YOUR CODE HERE.
     REPLACE THE resonse_image WITH THE RESPONSE IMAGE YOU CALCULATED."""
-
-    response_image = np.random.uniform(size=Ix.shape)
+    g = np.ones((5, 5))
+    Ixx = Ix * Ix
+    Iyy = Iy * Iy
+    Ixy = Ix * Iy
+    Sxx = signal.convolve2d(in1=Ixx, in2=g, mode='same')
+    Syy = signal.convolve2d(in1=Iyy, in2=g, mode='same')
+    Sxy = signal.convolve2d(in1=Ixy, in2=g, mode='same')
+    response_image = np.multiply(Sxx, Syy) - np.square(Sxy) - K * np.square(Sxx + Syy)
     return response_image
 
 
