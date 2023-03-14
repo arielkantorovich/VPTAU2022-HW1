@@ -140,19 +140,18 @@ def create_grad_x_and_grad_y(
     # Get image dimensions
     if len(input_image.shape) == 2:
         # this is the case of a black and white image
-        nof_color_channels = 1
         height, width = input_image.shape
 
     else:
         # this is the case of an RGB image
-        nof_color_channels = 3
         height, width, _ = input_image.shape
+        input_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2GRAY)
 
-    """INSERT YOUR CODE HERE.
-    REPLACE THE VALUES FOR Ix AND Iy WITH THE GRADIENTS YOU COMPUTED.
-    """
-    Ix = np.random.uniform(size=(height, width))
-    Iy = np.random.uniform(size=(height, width))
+    """INSERT YOUR CODE HERE"""
+    Iy_shift = np.pad(input_image, pad_width=((1, 0), (0, 0)), mode='constant', constant_values=0)[:-1, :]
+    Ix_shift = np.pad(input_image, pad_width=((0, 0), (1, 0)), mode='constant', constant_values=0)[:, :-1]
+    Ix = input_image - Ix_shift
+    Iy = input_image - Iy_shift
     return Ix, Iy
 
 
