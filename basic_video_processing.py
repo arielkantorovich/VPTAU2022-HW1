@@ -88,10 +88,26 @@ def convert_video_to_black_and_white(input_video_path: str,
     https://docs.microsoft.com/en-us/windows/win32/medfound/video-fourccs
 
     """
-    """INSERT YOUR CODE HERE.
-        REMOVE THE pass KEYWORD AND IMPLEMENT YOUR OWN CODE.
-        """
-    pass
+    """INSERT YOUR CODE HERE."""
+    cap = cv2.VideoCapture(input_video_path)
+    if cap.isOpened()== False:
+        print("Error open video file")
+        exit(-1)
+    param = get_video_parameters(cap)
+    out = cv2.VideoWriter(output_video_path, fourcc=param["fourcc"], fps=param["fps"], frameSize=(param["width"],
+                                                                                                  param["height"]), isColor=False)
+    while True:
+        ret, frame = cap.read()
+        if ret:
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            blur = cv2.GaussianBlur(gray_frame, (3, 3), 0)
+            ret3, binary_frame = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            out.write(binary_frame)
+        else:
+            break
+    cap.release()
+    out.release()
+
 
 
 def convert_video_to_sobel(input_video_path: str,
