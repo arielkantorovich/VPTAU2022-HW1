@@ -4,7 +4,7 @@ import cv2
 
 
 # Replace ID1 and ID2 with your IDs.
-ID1 = '123456789'
+ID1 = '308345891'
 ID2 = '987654321'
 
 INPUT_VIDEO = 'atrium.avi'
@@ -48,11 +48,23 @@ def convert_video_to_grayscale(input_video_path: str,
     https://docs.microsoft.com/en-us/windows/win32/medfound/video-fourccs
 
     """
-    """INSERT YOUR CODE HERE.
-    REMOVE THE pass KEYWORD AND IMPLEMENT YOUR OWN CODE.
-    """
-    pass
-
+    """INSERT YOUR CODE HERE."""
+    cap = cv2.VideoCapture(input_video_path)
+    if cap.isOpened()== False:
+        print("Error open video file")
+        exit(-1)
+    param = get_video_parameters(cap)
+    out = cv2.VideoWriter(output_video_path, fourcc=param["fourcc"], fps=param["fps"], frameSize=(param["width"],
+                                                                                                  param["height"]), isColor=False)
+    while True:
+        ret, frame = cap.read()
+        if ret:
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            out.write(gray_frame)
+        else:
+            break
+    cap.release()
+    out.release()
 
 def convert_video_to_black_and_white(input_video_path: str,
                                      output_video_path: str) -> None:
