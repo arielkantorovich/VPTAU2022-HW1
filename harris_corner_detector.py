@@ -11,8 +11,8 @@ ID2 = '987654321'
 
 # Harris corner detector parameters - you may change them.
 K = 0.05
-CHECKERBOARD_THRESHOLD = 1e1
-GIRAFFE_THRESHOLD = 1e6
+CHECKERBOARD_THRESHOLD = 1e13
+GIRAFFE_THRESHOLD = 1e12
 BUTTERFLY_IMAGE = 'butterfly.jpg'
 
 # Do not change the following constants:
@@ -224,9 +224,18 @@ def our_harris_corner_detector(input_image: np.ndarray, K: float,
     ones where the image from (3) is larger than the threshold.
     """
     response_image = calculate_response_image(input_image, K)
+    h, w = response_image.shape
     """INSERT YOUR CODE HERE.
     REPLACE THE output_image WITH THE BINARY MAP YOU COMPUTED."""
-    output_image = np.random.uniform(size=response_image.shape)
+    response_tiles = black_and_white_image_to_tiles(response_image, nrows=25, ncols=25)
+    binary_tiles = np.zeros_like(response_tiles)
+    for i in range(response_tiles.shape[0]):
+        id_max = np.argmax(response_tiles[i])
+        row, col = np.unravel_index(id_max, (25, 25))
+        binary_tiles[i, row, col] = 1.0
+    tiles_max = response_tiles * binary_tiles
+    mask_max = image_tiles_to_black_and_white_image(tiles_max, h, w)
+    output_image = mask_max > threshold
     return output_image
 
 
