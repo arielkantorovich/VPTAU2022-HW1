@@ -132,10 +132,24 @@ def convert_video_to_sobel(input_video_path: str,
     https://docs.microsoft.com/en-us/windows/win32/medfound/video-fourccs
 
     """
-    """INSERT YOUR CODE HERE.
-        REMOVE THE pass KEYWORD AND IMPLEMENT YOUR OWN CODE.
-        """
-    pass
+    """INSERT YOUR CODE HERE"""
+    cap = cv2.VideoCapture(input_video_path)
+    if cap.isOpened()== False:
+        print("Error open video file")
+        exit(-1)
+    param = get_video_parameters(cap)
+    out = cv2.VideoWriter(output_video_path, fourcc=param["fourcc"], fps=param["fps"], frameSize=(param["width"],
+                                                                                                  param["height"]), isColor=False)
+    while True:
+        ret, frame = cap.read()
+        if ret:
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            sobel = cv2.Sobel(gray_frame, dx=1, dy=1, ddepth=-1, ksize=5)
+            out.write(sobel)
+        else:
+            break
+    cap.release()
+    out.release()
 
 
 def main():
