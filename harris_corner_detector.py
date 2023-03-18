@@ -152,8 +152,8 @@ def create_grad_x_and_grad_y(
      so we decide using dervitve kernel like we learn in signal processing to get better result."""
     dx_filter = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]])
     dy_filter = dx_filter.copy().transpose()
-    Iy = signal.convolve2d(input_image, dx_filter, mode='same')
-    Ix = signal.convolve2d(input_image, dy_filter, mode='same')
+    Iy = signal.convolve2d(input_image, dx_filter, mode='same', boundary='wrap')
+    Ix = signal.convolve2d(input_image, dy_filter, mode='same', boundary='wrap')
     return Ix, Iy
 
 
@@ -190,9 +190,9 @@ def calculate_response_image(input_image: np.ndarray, K: float) -> np.ndarray:
     Ixx = Ix * Ix
     Iyy = Iy * Iy
     Ixy = Ix * Iy
-    Sxx = signal.convolve2d(in1=Ixx, in2=g, mode='same')
-    Syy = signal.convolve2d(in1=Iyy, in2=g, mode='same')
-    Sxy = signal.convolve2d(in1=Ixy, in2=g, mode='same')
+    Sxx = signal.convolve2d(in1=Ixx, in2=g, mode='same', boundary='fill')
+    Syy = signal.convolve2d(in1=Iyy, in2=g, mode='same', boundary='fill')
+    Sxy = signal.convolve2d(in1=Ixy, in2=g, mode='same', boundary='fill')
     response_image = np.multiply(Sxx, Syy) - np.square(Sxy) - K * np.square(Sxx + Syy)
     return response_image
 
