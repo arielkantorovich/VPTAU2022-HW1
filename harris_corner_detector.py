@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 
 # Replace ID1 and ID2 with your IDs.
 ID1 = '308345891'
-ID2 = '987654321'
+ID2 = '211670849'
 
 # Harris corner detector parameters - you may change them.
 K = 0.05
@@ -152,8 +152,8 @@ def create_grad_x_and_grad_y(
      so we decide using dervitve kernel like we learn in signal processing to get better result."""
     dx_filter = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]])
     dy_filter = dx_filter.copy().transpose()
-    Iy = signal.convolve2d(input_image, dx_filter, mode='same', boundary='wrap')
-    Ix = signal.convolve2d(input_image, dy_filter, mode='same', boundary='wrap')
+    Ix = signal.convolve2d(input_image, dx_filter, mode='same', boundary='wrap')
+    Iy = signal.convolve2d(input_image, dy_filter, mode='same', boundary='wrap')
     return Ix, Iy
 
 

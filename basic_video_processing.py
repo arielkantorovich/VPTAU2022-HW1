@@ -5,7 +5,7 @@ import cv2
 
 # Replace ID1 and ID2 with your IDs.
 ID1 = '308345891'
-ID2 = '987654321'
+ID2 = '211670849'
 
 INPUT_VIDEO = 'atrium.avi'
 GRAYSCALE_VIDEO = f'{ID1}_{ID2}_atrium_grayscale.avi'
